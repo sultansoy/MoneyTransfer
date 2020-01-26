@@ -1,6 +1,5 @@
 package com.sultansoy.app.configs;
 
-import com.sultansoy.app.accounts.Account;
 import com.sultansoy.app.accounts.AccountException;
 import com.sultansoy.app.accounts.AccountsController;
 import com.sultansoy.app.accounts.AccountsRouteConstants;

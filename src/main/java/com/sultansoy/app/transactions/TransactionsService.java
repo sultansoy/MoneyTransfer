@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 import java.time.Clock;
 import java.util.List;
 
-import static com.sultansoy.app.utils.BooleanUtils.not;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -39,34 +38,33 @@ public class TransactionsService {
     }
 
     public Transaction executeTransaction(Transaction transaction) {
-        if (not(validate(transaction))) {
-            throw new TransactionException("Wrong transaction!");
-        }
+        if (validate(transaction)) {
+            var fromUuid = transaction.getFromId();
+            var from = accountsRepository.get(fromUuid);
+            if (isNull(from)) {
+                throw new TransactionException("Can't find \"from\" account!");
+            }
+            if (from.getBalance() < transaction.getAmount()) {
+                throw new TransactionException("No such money");
+            }
 
-        var fromUuid = transaction.getFromId();
-        var from = accountsRepository.get(fromUuid);
-        if (isNull(from)) {
-            throw new TransactionException("Can't find \"from\" account!");
-        }
-        if (from.getBalance() < transaction.getAmount()) {
-            throw new TransactionException("No such money");
-        }
+            var toUuid = transaction.getFromId();
+            var to = accountsRepository.get(toUuid);
+            if (isNull(to)) {
+                throw new TransactionException("Can't find \"to\" account!");
+            }
 
-        var toUuid = transaction.getFromId();
-        var to = accountsRepository.get(toUuid);
-        if (isNull(to)) {
-            throw new TransactionException("Can't find \"to\" account!");
+            var fromBalance = from.getBalance() - transaction.getAmount();
+            var toBalance = to.getBalance() + transaction.getAmount();
+            from.setBalance(fromBalance);
+            to.setBalance(toBalance);
+            accountsRepository.update(from);
+            accountsRepository.update(to);
+
+            transaction.setDate(Clock.systemDefaultZone().instant());
+            return transactionsRepository.create(transaction);
         }
-
-        var fromBalance = from.getBalance() - transaction.getAmount();
-        var toBalance = to.getBalance() + transaction.getAmount();
-        from.setBalance(fromBalance);
-        to.setBalance(toBalance);
-        accountsRepository.update(from);
-        accountsRepository.update(to);
-
-        transaction.setDate(Clock.systemDefaultZone().instant());
-        return transactionsRepository.create(transaction);
+        throw new TransactionException("Wrong transaction!");
     }
 
     private boolean validate(Transaction transaction) {
@@ -74,8 +72,8 @@ public class TransactionsService {
                 && isNull(transaction.getDate())
                 && nonNull(transaction.getFromId())
                 && nonNull(transaction.getToId())
-                //depends on business rules
-                //&& not(Objects.equals(transaction.getFromId(), transaction.getToId()))
+                //depends on business requirements
+                //&& !Objects.equals(transaction.getFromId(), transaction.getToId())
                 && transaction.getAmount() > 0;
     }
 

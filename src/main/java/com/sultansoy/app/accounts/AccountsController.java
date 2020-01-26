@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import static com.sultansoy.app.accounts.AccountsRouteConstants.ACCOUNTS_ID_PARAM;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -20,13 +19,13 @@ public class AccountsController {
     }
 
     public void get(Context context) {
-        String uuid = context.pathParam(ACCOUNTS_ID_PARAM);
+        String uuid = context.pathParam(AccountsRouteConstants.ACCOUNTS_ID_PARAM);
         Account account = accountsRepository.get(uuid);
         context.json(account);
     }
 
     public void delete(Context context) {
-        String uuid = context.pathParam(ACCOUNTS_ID_PARAM);
+        String uuid = context.pathParam(AccountsRouteConstants.ACCOUNTS_ID_PARAM);
         accountsRepository.delete(uuid);
         context.status(200);
     }
