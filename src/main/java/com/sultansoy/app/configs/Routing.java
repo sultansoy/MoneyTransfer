@@ -16,8 +16,7 @@ public class Routing {
 
     public static Javalin initApp() {
 
-        Javalin app = Javalin.create()
-                .start(3003);
+        Javalin app = Javalin.create();
 
         AccountsController accountsController = container.accountsController();
         TransactionsController transactionsController = container.transactionsController();
