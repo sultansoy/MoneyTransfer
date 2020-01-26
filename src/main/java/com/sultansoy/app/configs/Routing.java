@@ -1,20 +1,34 @@
 package com.sultansoy.app.configs;
 
+import com.sultansoy.app.accounts.Account;
 import com.sultansoy.app.accounts.AccountException;
 import com.sultansoy.app.accounts.AccountsController;
 import com.sultansoy.app.accounts.AccountsRouteConstants;
+import com.sultansoy.app.transactions.Transaction;
 import com.sultansoy.app.transactions.TransactionException;
 import com.sultansoy.app.transactions.TransactionsController;
 import com.sultansoy.app.transactions.TransactionsRouteConstants;
 import io.javalin.Javalin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 
 public class Routing {
 
-    private static final Container container = new Container();
 
     public static Javalin initApp() {
+        Container container = new Container();
+        return getJavalin(container);
+    }
 
+    public static Javalin initTestApp(Map<String, Account> accounts, Map<String, Transaction> transactions) {
+        Container container = new Container(accounts, transactions);
+        return getJavalin(container);
+    }
+
+    @NotNull
+    private static Javalin getJavalin(Container container) {
         Javalin app = Javalin.create();
 
         AccountsController accountsController = container.accountsController();
@@ -35,5 +49,6 @@ public class Routing {
 
         return app;
     }
+
 
 }

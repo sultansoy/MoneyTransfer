@@ -1,6 +1,8 @@
 package com.sultansoy.app.accounts;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashMap;
@@ -12,10 +14,11 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountsRepository {
 
-    Map<String, Account> accounts = new HashMap<>();
+    Map<String, Account> accounts;
 
     public Account create(Account account) {
         if (nonNull(account.getUuid())) {

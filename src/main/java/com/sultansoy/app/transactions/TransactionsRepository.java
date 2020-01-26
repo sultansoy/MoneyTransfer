@@ -1,6 +1,9 @@
 package com.sultansoy.app.transactions;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 import java.util.*;
@@ -10,10 +13,11 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TransactionsRepository {
 
-    Map<String, Transaction> transactions = new HashMap<>();
+    Map<String, Transaction> transactions;
 
     public Transaction create(Transaction transaction) {
         if (nonNull(transaction.getUuid())) {
