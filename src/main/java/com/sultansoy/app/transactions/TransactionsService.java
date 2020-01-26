@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.Clock;
 import java.util.List;
 
+import static com.sultansoy.app.transactions.TransactionException.*;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -42,16 +43,16 @@ public class TransactionsService {
             var fromUuid = transaction.getFromId();
             var from = accountsRepository.get(fromUuid);
             if (isNull(from)) {
-                throw new TransactionException("Can't find \"from\" account!");
+                throw new TransactionException(NOT_FOUND_FROM);
             }
             if (from.getBalance() < transaction.getAmount()) {
-                throw new TransactionException("No such money");
+                throw new TransactionException(NO_SUCH_MONEY);
             }
 
-            var toUuid = transaction.getFromId();
+            var toUuid = transaction.getToId();
             var to = accountsRepository.get(toUuid);
             if (isNull(to)) {
-                throw new TransactionException("Can't find \"to\" account!");
+                throw new TransactionException(NOT_FOUND_TO);
             }
 
             var fromBalance = from.getBalance() - transaction.getAmount();
@@ -64,7 +65,7 @@ public class TransactionsService {
             transaction.setDate(Clock.systemDefaultZone().instant());
             return transactionsRepository.create(transaction);
         }
-        throw new TransactionException("Wrong transaction!");
+        throw new TransactionException(TransactionException.WRONG_TRANSACTION);
     }
 
     private boolean validate(Transaction transaction) {

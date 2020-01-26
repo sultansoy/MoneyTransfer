@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.sultansoy.app.accounts.AccountException.*;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -22,11 +23,11 @@ public class AccountsRepository {
 
     public Account create(Account account) {
         if (nonNull(account.getUuid())) {
-            throw new AccountException("New account uuid must be null! Uuid will be generated automatically");
+            throw new AccountException(NOT_NULL_UUID);
         }
 
         if (account.getBalance() < 0) {
-            throw new AccountException("Invalid balance");
+            throw new AccountException(INVALID_BALANCE);
         }
 
         account.setUuid(UUID.randomUUID().toString());
@@ -37,10 +38,10 @@ public class AccountsRepository {
     public Account update(Account account) {
         Account stored = accounts.get(account.getUuid());
         if (isNull(stored)) {
-            throw new AccountException("Can't find account");
+            throw new AccountException(NOT_FOUND);
         }
         if (account.getBalance() < 0) {
-            throw new AccountException("Invalid balance");
+            throw new AccountException(INVALID_BALANCE);
         }
         stored.setBalance(account.getBalance());
         return copy(stored);

@@ -50,8 +50,8 @@ public class Routing {
         app.post(TransactionsRouteConstants.TRANSACTIONS, transactionsController::executeTransaction);
         app.post(TransactionsRouteConstants.TRANSACTIONS_WITH_UUID, transactionsController::get);
 
-        app.exception(AccountException.class, (e, ctx) -> ctx.result(e.getMessage()));
-        app.exception(TransactionException.class, (e, ctx) -> ctx.result(e.getMessage()));
+        app.exception(AccountException.class, (e, ctx) -> { ctx.status(400); ctx.result(e.getMessage()); });
+        app.exception(TransactionException.class, (e, ctx) -> { ctx.status(400); ctx.result(e.getMessage()); });
         app.exception(Exception.class, (e, ctx) -> ctx.status(500));
 
         return app;

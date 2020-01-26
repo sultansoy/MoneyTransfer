@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.sultansoy.app.transactions.TransactionException.INVALID_AMOUNT;
+import static com.sultansoy.app.transactions.TransactionException.NOT_NULL_UUID;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
@@ -21,11 +23,11 @@ public class TransactionsRepository {
 
     public Transaction create(Transaction transaction) {
         if (nonNull(transaction.getUuid())) {
-            throw new TransactionException("New transaction uuid must be null! Uuid will be generated automatically");
+            throw new TransactionException(NOT_NULL_UUID);
         }
 
         if (transaction.getAmount() < 0) {
-            throw new TransactionException("Invalid amount");
+            throw new TransactionException(INVALID_AMOUNT);
         }
 
         transaction.setUuid(UUID.randomUUID().toString());
