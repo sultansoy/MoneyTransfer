@@ -74,6 +74,8 @@ public class TransactionsService {
                 && isNull(transaction.getDate())
                 && nonNull(transaction.getFromId())
                 && nonNull(transaction.getToId())
+                //depends on business rules
+                //&& not(Objects.equals(transaction.getFromId(), transaction.getToId()))
                 && transaction.getAmount() > 0;
     }
 

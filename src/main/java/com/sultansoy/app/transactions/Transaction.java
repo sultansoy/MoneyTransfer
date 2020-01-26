@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Clock;
 import java.time.Instant;
 
 @Data
@@ -14,5 +13,5 @@ public class Transaction {
     String fromId;
     String toId;
     long amount;
-    Instant date = Clock.systemDefaultZone().instant();
+    Instant date;
 }
