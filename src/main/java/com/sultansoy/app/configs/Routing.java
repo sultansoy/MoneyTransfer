@@ -1,5 +1,7 @@
 package com.sultansoy.app.configs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sultansoy.app.accounts.Account;
 import com.sultansoy.app.accounts.AccountException;
 import com.sultansoy.app.accounts.AccountsController;
@@ -9,6 +11,7 @@ import com.sultansoy.app.transactions.TransactionException;
 import com.sultansoy.app.transactions.TransactionsController;
 import com.sultansoy.app.transactions.TransactionsRouteConstants;
 import io.javalin.Javalin;
+import io.javalin.plugin.json.JavalinJackson;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -29,6 +32,10 @@ public class Routing {
 
     @NotNull
     private static Javalin getJavalin(Container container) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        JavalinJackson.configure(mapper);
+
         Javalin app = Javalin.create();
 
         AccountsController accountsController = container.accountsController();
