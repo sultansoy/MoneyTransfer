@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Clock;
+import java.util.List;
 
 import static com.sultansoy.app.utils.BooleanUtils.not;
 import static java.util.Objects.isNull;
@@ -20,6 +21,22 @@ public class TransactionsService {
     AccountsRepository accountsRepository;
 
 
+    public Transaction get(String uuid) {
+        return transactionsRepository.get(uuid);
+    }
+
+    public List<Transaction> getList(String from, String to) {
+        if (isNull(from) && isNull(to)) {
+            return transactionsRepository.getAll();
+        }
+        if (isNull(from)) {
+            return transactionsRepository.getTo(to);
+        }
+        if (isNull(to)) {
+            return transactionsRepository.getFrom(from);
+        }
+        return transactionsRepository.getFromTo(from, to);
+    }
 
     public Transaction executeTransaction(Transaction transaction) {
         if (not(validate(transaction))) {
@@ -59,6 +76,5 @@ public class TransactionsService {
                 && nonNull(transaction.getToId())
                 && transaction.getAmount() > 0;
     }
-
 
 }
