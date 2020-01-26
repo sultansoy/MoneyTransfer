@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 import static com.sultansoy.app.transactions.TransactionsRouteConstants.*;
-import static java.util.Objects.isNull;
 
 @AllArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)

@@ -13,11 +13,8 @@ repositories {
 
 dependencies {
     compile 'io.javalin:javalin:3.7.0'
-//    compile 'com.google.inject:guice:4.2.2'
-//    compile 'com.google.inject.extensions:guice-multibindings:4.2.2'
-//    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
-//    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'

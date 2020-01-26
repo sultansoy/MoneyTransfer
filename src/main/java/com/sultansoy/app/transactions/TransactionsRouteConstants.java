@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class TransactionsRouteConstants {
 
-    public final String TRANSACTIONS = "/accounts";
+    public final String TRANSACTIONS = "/transactions";
     public final String TRANSACTIONS_ID_PARAM = "uuid";
     public final String TRANSACTIONS_WITH_UUID = TRANSACTIONS + "/:" + TRANSACTIONS_ID_PARAM;
 
